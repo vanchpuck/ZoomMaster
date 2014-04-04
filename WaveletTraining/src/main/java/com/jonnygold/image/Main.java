@@ -9,6 +9,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import com.jonnygold.sample.IsSamplesDataSource;
+import com.jonnygold.sample.SamplesStorage;
+import com.jonnygold.sample.TestSampleDS;
+import com.jonnygold.wavelet.WaveletTransformer;
+
 public class Main extends JFrame {
 
 	public Main() throws IOException{
@@ -37,11 +42,15 @@ public class Main extends JFrame {
 		add(imgPanel);
 		
 		setVisible(true);
+		
+		
+		
 	}
 	
 	public static void main(String[] args) throws IOException {
 		
 		new Main();
+		
 		
 	}
 	

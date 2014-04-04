@@ -17,13 +17,13 @@ public class Signal {
     
     private double[] data;
     
-    protected Signal(double[] input, int h, int w){
+    public Signal(double[] input, int h, int w){
         this.data = input;
         this.height = h;
         this.width = w;
     }
     
-    protected Signal(int h, int w){
+    public Signal(int h, int w){
         this.height = h;
         this.width = w;
     }
@@ -43,7 +43,7 @@ public class Signal {
         return new Signal(buffer, h, w);
     }
     
-    protected void setSignal(Signal input, int y, int x){
+    public void setSignal(Signal input, int y, int x){
         
         double[] inData = input.getData();
         int h = input.height;

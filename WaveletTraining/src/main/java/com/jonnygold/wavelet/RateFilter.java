@@ -8,7 +8,7 @@ package com.jonnygold.wavelet;
  *
  * @author Vanchpuck
  */
-public class RateFilter extends Transformer{
+public class RateFilter implements Transformer{
     
     private int border;
     

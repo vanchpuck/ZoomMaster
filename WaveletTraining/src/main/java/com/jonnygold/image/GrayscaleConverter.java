@@ -33,7 +33,9 @@ class GrayscaleConverter implements BufferedImageWrapper.BufferedImageConverter{
 		
 		int h = raster.getHeight();
 		int w = raster.getWidth();
-		result.add (new DiscreteSignal(raster.getSamples(0, 0, w, h, 0, new double[w * h]), h, w ) );
+		
+		double[] data = raster.getSamples(0, 0, w, h, 0, new double[w * h]);
+		result.add (new Signal(data, h, w ));
 		
 		
 		

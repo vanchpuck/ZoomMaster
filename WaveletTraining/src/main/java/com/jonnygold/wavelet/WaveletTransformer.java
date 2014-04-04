@@ -10,7 +10,7 @@ import com.jonnygold.wavelet.filter.WaveletFilter;
  *
  * @author Vanchpuck
  */
-public class WaveletTransformer extends Transformer{
+public class WaveletTransformer implements Transformer{
     
     private WaveletFilter filter;
     private TransformLogic alg;
