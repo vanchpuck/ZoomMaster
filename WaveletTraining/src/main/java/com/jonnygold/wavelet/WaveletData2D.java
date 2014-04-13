@@ -12,6 +12,36 @@ import java.util.Arrays;
  */
 public class WaveletData2D<T extends Signal> extends WaveletData<WaveletData1D<T>> {
 
+	public enum Segment {
+		LL {
+			@Override
+			public Signal getSignal(WaveletData2D<Signal> wData2D) {
+				return wData2D.getScaled().getScaled();
+			}
+		},
+		LH {
+			@Override
+			public Signal getSignal(WaveletData2D<Signal> wData2D) {
+				return wData2D.getScaled().getWavelet();
+			}
+		},
+		HL {
+			@Override
+			public Signal getSignal(WaveletData2D<Signal> wData2D) {
+				return wData2D.getWavelet().getScaled();
+			}
+		},
+		HH {
+			@Override
+			public Signal getSignal(WaveletData2D<Signal> wData2D) {
+				return wData2D.getWavelet().getWavelet();
+			}
+		};
+		
+		public abstract Signal getSignal(WaveletData2D<Signal> wData2D);
+		
+	}
+	
     private WaveletData1D<T> scaled;
     private WaveletData1D<T> wavelet;
     

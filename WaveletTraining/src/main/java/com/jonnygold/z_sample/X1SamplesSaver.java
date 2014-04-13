@@ -1,4 +1,4 @@
-package com.jonnygold.sample;
+package com.jonnygold.z_sample;
 
 import com.jonnygold.image.SignalSplitter;
 import com.jonnygold.image.SplitOptions;

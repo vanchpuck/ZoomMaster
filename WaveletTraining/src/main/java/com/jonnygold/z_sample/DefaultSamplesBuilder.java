@@ -1,4 +1,4 @@
-package com.jonnygold.sample;
+package com.jonnygold.z_sample;
 
 public class DefaultSamplesBuilder extends SamplesStore.Builder {
 

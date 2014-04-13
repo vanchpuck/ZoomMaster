@@ -1,11 +1,9 @@
-package test;
+package com.jonnygold.sample;
 
 public interface IsBlock {
 
 	public int getWidth();
 	
 	public int getHeight();
-	
-	public int[] getData();
 	
 }

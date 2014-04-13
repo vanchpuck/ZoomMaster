@@ -1,21 +1,17 @@
-package com.jonnygold.sample;
+package com.jonnygold.z_sample;
 
 import com.jonnygold.wavelet.Signal;
 
 final class Sample {
-
-	public static enum Category{
-		HL, LH, HH;
-	}
 	
-	private final Category category;
+	private final WaveletSegment2D segment;
 	private final Signal small;
 	private final Signal big;
 	
-	public Sample(Signal small, Signal big, Category category){
+	public Sample(Signal small, Signal big, WaveletSegment2D segment){
 		this.small = small;
 		this.big = big;
-		this.category = category;
+		this.segment = segment;
 	}
 	
 	public final Signal getSmall(){
@@ -26,8 +22,8 @@ final class Sample {
 		return new Signal(big.getData(), big.height, big.width);
 	}
 	
-	public Category getCategory() {
-		return category;
+	public WaveletSegment2D getCategory() {
+		return segment;
 	}
 	
 }

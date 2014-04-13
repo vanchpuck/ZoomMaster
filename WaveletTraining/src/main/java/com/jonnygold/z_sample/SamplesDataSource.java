@@ -1,7 +1,13 @@
-package test;
+package com.jonnygold.z_sample;
 
-public class X3SamplesDataSource<S extends X3SignalBlock, L extends X9SignalBlock> implements IsSamplesDataSource<S, L> {
+import com.jonnygold.wavelet.Signal;
 
+class SamplesDataSource implements IsSamplesDataSource {
+
+	public SamplesDataSource(){
+		
+	}
+	
 	@Override
 	public void connect() {
 		// TODO Auto-generated method stub
@@ -13,15 +19,15 @@ public class X3SamplesDataSource<S extends X3SignalBlock, L extends X9SignalBloc
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
-	public void saveSample(IsSamplesDataSource.Sample<S, L> sample) {
+	public void saveSample(Sample sample) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public IsSamplesDataSource.Sample<S, L> findSample(S small) {
+	public Sample loadSample(Signal signal) {
 		// TODO Auto-generated method stub
 		return null;
 	}
