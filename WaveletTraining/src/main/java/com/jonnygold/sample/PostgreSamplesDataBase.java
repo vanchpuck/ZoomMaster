@@ -74,24 +74,7 @@ public abstract class PostgreSamplesDataBase<S extends IsBlock, L extends IsBloc
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataSourceException(e);
-		}
-		
-		
-		
-//		switch (sample.getSegment()) {
-//		case LH:
-//			
-//			break;
-//		case HL:
-//					
-//			break;
-//		case HH:
-//			
-//			break;
-//
-//		default:
-//			break;
-//		}
+		}		
 	}
 
 	@Override

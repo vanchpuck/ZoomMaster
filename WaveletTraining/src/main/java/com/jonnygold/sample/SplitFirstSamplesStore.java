@@ -62,19 +62,16 @@ public class SplitFirstSamplesStore<S extends IsBlock, L extends IsBlock> implem
 		WaveletData2D<Signal> wData2Step = transformer.getDirectTransform2D(WaveletData2D.Segment.LL.getSignal(wData1Step));
 	
 		try {
-			if(SamplesCheck.pass(WaveletData2D.Segment.LH.getSignal(wData2Step)))
-				dataSource.saveSample(
-						new IsSamplesDataSource.Sample<S, L>(WaveletData2D.Segment.LH.getSignal(wData2Step),
-								WaveletData2D.Segment.LH.getSignal(wData1Step), WaveletData2D.Segment.LH));		
-		
-//			dataSource.saveSample(
-//					new IsSamplesDataSource.Sample<S, L>(WaveletData2D.Segment.HL.getSignal(wData2Step),
-//							WaveletData2D.Segment.HL.getSignal(wData1Step), WaveletData2D.Segment.HL));
-//			
-//			dataSource.saveSample(
-//					new IsSamplesDataSource.Sample<S, L>(WaveletData2D.Segment.HH.getSignal(wData2Step),
-//							WaveletData2D.Segment.HH.getSignal(wData1Step), WaveletData2D.Segment.HH));
-		
+			Signal small = null;
+			for(WaveletData2D.Segment segment : WaveletData2D.Segment.values()){				
+				if(segment != WaveletData2D.Segment.LL){
+					small = segment.getSignal(wData2Step);
+					if(SamplesCheck.pass(small)){
+						dataSource.saveSample(
+								new IsSamplesDataSource.Sample<S, L>(small, segment.getSignal(wData1Step), segment));
+					}
+				}
+			}		
 		} catch (DataSourceException e) {
 			e.printStackTrace();
 			throw new StoreException(e);
