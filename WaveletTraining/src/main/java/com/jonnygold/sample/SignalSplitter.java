@@ -12,9 +12,12 @@ public class SignalSplitter <S extends IsBlock> {
 	
 	private int blocksCount;
 	
-	public SignalSplitter(Signal signal, S block){
+	private int step;
+	
+	public SignalSplitter(Signal signal, S block, int step){
 		this.signal = signal;
 		this.block = block;
+		this.step = step;
 		
 		setBlock(block);
 	}
@@ -45,9 +48,9 @@ public class SignalSplitter <S extends IsBlock> {
 	public void setBlock(S block){
 		this.block = block;
 		
-		int blocksPerColumn = (signal.height - block.getHeight()) + 1;
+		int blocksPerColumn = (signal.height - block.getHeight())/step + 1;
 		
-		blocksPerRow = (signal.width - block.getWidth()) + 1;
+		blocksPerRow = (signal.width - block.getWidth())/step + 1;
 		
 		blocksCount = blocksPerRow * blocksPerColumn;
 	}

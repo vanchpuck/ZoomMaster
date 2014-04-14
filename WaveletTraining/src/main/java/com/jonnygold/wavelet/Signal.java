@@ -35,7 +35,7 @@ public class Signal {
         double[] rowData = new double[w];
         
         for(int oy=y,i=0; i<h; oy++,i++){
-            rowData = Arrays.copyOfRange(this.data, oy*this.width+x, oy*this.width+x+w);
+            rowData = Arrays.copyOfRange(this.getData(), oy*this.width+x, oy*this.width+x+w);
             
             System.arraycopy(rowData, 0, buffer, i*w, w);
         }

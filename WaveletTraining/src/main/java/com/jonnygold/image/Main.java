@@ -5,16 +5,23 @@ import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import com.jonnygold.sample.IsSamplesDataSource;
+import com.jonnygold.sample.IsSamplesStore;
 import com.jonnygold.sample.PostgreSamplesDataBase;
-import com.jonnygold.sample.SamplesStore;
+import com.jonnygold.sample.SplitFirstSamplesStore;
 import com.jonnygold.sample.StoreException;
 import com.jonnygold.sample.X3Block;
 import com.jonnygold.sample.X3SamplesDataBase;
-import com.jonnygold.sample.X9Block;
+import com.jonnygold.sample.X4Block;
+import com.jonnygold.sample.X4SamplesDataBase;
+import com.jonnygold.sample.X6Block;
+import com.jonnygold.sample.X8Block;
 import com.jonnygold.wavelet.RateFilter;
 import com.jonnygold.wavelet.Signal;
 import com.jonnygold.wavelet.SimpleTransform;
@@ -38,16 +45,18 @@ public class Main extends JFrame {
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+		URL url = this.getClass().getResource("/tenge.jpg");
 		
+		File file = new File(URLDecoder.decode(url.getFile(), "UTF-8"));	
 		
 //		File f = new File("/home/izolotov/Downloads/Calendar/moravia.jpg");
-		File f = new File("C:\\Users\\Vanchpuck\\Desktop\\lenin.jpg");
+//		File f = new File("C:\\Users\\Vanchpuck\\Desktop\\lenin.jpg");
 		
 		
-		BufferedImage src = ImageIO.read(f);
+		BufferedImage src = ImageIO.read(file);
 		
 		SignalWrapper<BufferedImage> wrapper = 
-				new BufferedImageWrapper<BufferedImage>(ImageIO.read(f), new GrayscaleConverter());
+				new BufferedImageWrapper<BufferedImage>(ImageIO.read(file), new GrayscaleConverter());
 		
 		BufferedImage img = wrapper.getSource();
 		
@@ -67,13 +76,13 @@ public class Main extends JFrame {
 		
 		
 		Transformer transformer = 
-				new RateFilter(new WaveletTransformer(DB4Filter.getInstance(), SimpleTransform.getInstance()), 5);
+				new RateFilter(new WaveletTransformer(HaarFilter.getInstance(), SimpleTransform.getInstance()), 5);
 		
-		X3SamplesDataBase dataBase = 
-				new X3SamplesDataBase(URL, USER, PASSWORD);
+		IsSamplesDataSource<X4Block, X8Block> dataSource = 
+				new X4SamplesDataBase(URL, USER, PASSWORD);
 		
-		SamplesStore<X3Block, X9Block> samplesStore = 
-				new SamplesStore<>(dataBase, transformer);
+		IsSamplesStore samplesStore = 
+				new SplitFirstSamplesStore<X4Block, X8Block>(dataSource, transformer);
 				
 		samplesStore.connect();
 		samplesStore.saveSamples(wrapper.getSignals().get(0));

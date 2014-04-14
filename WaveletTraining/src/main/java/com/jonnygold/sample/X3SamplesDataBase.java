@@ -1,6 +1,6 @@
 package com.jonnygold.sample;
 
-public class X3SamplesDataBase extends PostgreSamplesDataBase<X3Block, X9Block> {
+public class X3SamplesDataBase extends PostgreSamplesDataBase<X3Block, X6Block> {
 
 	public X3SamplesDataBase(String URL, String userName, String password) {
 		super(URL, userName, password);
@@ -12,8 +12,8 @@ public class X3SamplesDataBase extends PostgreSamplesDataBase<X3Block, X9Block> 
 	}
 
 	@Override
-	public X9Block getLargeBlock() {
-		return X9Block.getInstance();
+	public X6Block getLargeBlock() {
+		return X6Block.getInstance();
 	}
 
 }

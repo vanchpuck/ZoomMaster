@@ -54,13 +54,20 @@ public abstract class PostgreSamplesDataBase<S extends IsBlock, L extends IsBloc
 	public void saveSample(IsSamplesDataSource.Sample<S, L> sample) throws DataSourceException {
 		PreparedStatement st;
 		try {
-			st = connection.prepareStatement("select save_sample(?)");
-			double[] data = sample.getSmall().getData();
-			Object[] intData = new Object[data.length];
-			for(int i=0; i<data.length; i++){
-				intData[i] = (int) data[i];
+			st = connection.prepareStatement("select save_sample(?, ?)");
+			double[] dataSmall = sample.getSmall().getData();
+			Object[] intDataSmall = new Object[dataSmall.length];
+			for(int i=0; i<dataSmall.length; i++){
+				intDataSmall[i] = (int) dataSmall[i];
 			}
-			st.setArray(1, connection.createArrayOf("integer", intData));
+			
+			double[] dataLarge = sample.getBig().getData();
+			Object[] intDataLarge = new Object[dataLarge.length];
+			for(int i=0; i<dataLarge.length; i++){
+				intDataLarge[i] = (int) dataLarge[i];
+			}
+			st.setArray(1, connection.createArrayOf("integer", intDataSmall));
+			st.setArray(2, connection.createArrayOf("integer", intDataLarge));
 			
 			st.executeQuery();
 			

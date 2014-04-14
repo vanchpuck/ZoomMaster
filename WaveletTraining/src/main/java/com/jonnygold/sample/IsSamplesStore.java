@@ -4,9 +4,9 @@ import com.jonnygold.wavelet.Signal;
 
 public interface IsSamplesStore {
 
-//	public void connect();
-//	
-//	public void disconnect();
+	public void connect() throws StoreException;
+	
+	public void disconnect() throws StoreException;
 	
 	public void saveSamples(Signal signal) throws StoreException;
 	
