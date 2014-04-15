@@ -29,6 +29,24 @@ public interface IsSamplesDataSource<S extends IsBlock, L extends IsBlock> {
 			return segment;
 		}
 		
+		@Override
+		public String toString() {
+			StringBuilder builder = new StringBuilder()
+				.append("(1,\"{");
+			for(double val : small.getData()){
+				builder.append(String.valueOf((int)val)).append(",");
+			}
+			builder.deleteCharAt(builder.lastIndexOf(","))
+				.append("}\",\"{");
+			
+			for(double val : big.getData()){
+				builder.append(String.valueOf((int)val)).append(",");
+			}
+			builder.deleteCharAt(builder.lastIndexOf(","))
+				.append("}\")");
+			return builder.toString();
+		}
+		
 	}
 	
 	public void connect() throws DataSourceException;
