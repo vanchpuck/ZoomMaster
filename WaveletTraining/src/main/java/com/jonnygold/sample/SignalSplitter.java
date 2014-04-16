@@ -35,14 +35,16 @@ public class SignalSplitter <S extends IsBlock> {
 		return blocksCount;
 	}
 	
-	public void setBlock(Signal signal, int idx){
-		if(signal.width != block.getWidth() || signal.height != block.getHeight()){
+	public void setBlock(Signal blocksignal, int idx){
+		if(blocksignal.width != block.getWidth() || blocksignal.height != block.getHeight()){
 			throw new IllegalArgumentException("Размер блока не соответствует заданным параметрам разделения.");
 		} 
-		else if(signal.width != block.getWidth() || signal.height != block.getHeight()){
+		else if(blocksignal.width != block.getWidth() || blocksignal.height != block.getHeight()){
 			throw new IllegalArgumentException("Втекущей реализации невозможно установить блок: "+idx);
 		}
-		signal.setSignal(signal, getY(idx), getX(idx));
+		int y = getY(idx);
+		int x = getX(idx);
+		signal.setSignal(blocksignal, getY(idx), getX(idx));
 	}
 	
 	public void setBlock(S block){
@@ -55,12 +57,16 @@ public class SignalSplitter <S extends IsBlock> {
 		blocksCount = blocksPerRow * blocksPerColumn;
 	}
 	
+	public Signal getSignal(){
+		return this.signal;
+	}
+	
 	private int getY(int idx){
-		return idx / blocksPerRow;
+		return idx / blocksPerRow * step;
 	}
 	
 	private int getX(int idx){
-		return idx % blocksPerRow;
+		return idx % blocksPerRow * step;
 	}
 	
 }

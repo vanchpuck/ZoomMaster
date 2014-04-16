@@ -1,5 +1,14 @@
 package com.jonnygold.sample;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import com.jonnygold.image.BufferedImageWrapper;
+import com.jonnygold.image.GrayscaleConverter;
+import com.jonnygold.image.SignalWrapper;
 import com.jonnygold.wavelet.Signal;
 import com.jonnygold.wavelet.Transformer;
 import com.jonnygold.wavelet.WaveletData2D;
@@ -86,8 +95,8 @@ public class SplitFirstSamplesStore<S extends IsBlock, L extends IsBlock> implem
 	public Signal getIncreased(Signal signal) throws StoreException {
 		Signal increased = new Signal(signal.height*2, signal.width*2);
 		
-		SignalSplitter<S> smallSplitter = new SignalSplitter<S>(signal, dataSource.getSmallBlock(), 4);
-		SignalSplitter<L> largeSplitter = new SignalSplitter<L>(increased, dataSource.getLargeBlock(), 8);
+		SignalSplitter<S> smallSplitter = new SignalSplitter<S>(signal, dataSource.getSmallBlock(), dataSource.getSmallBlock().getWidth());
+		SignalSplitter<L> largeSplitter = new SignalSplitter<L>(increased, dataSource.getLargeBlock(), dataSource.getLargeBlock().getWidth());
 		
 		try {
 			for(int i=0; i<smallSplitter.getBlocksCount(); i++){
@@ -102,17 +111,26 @@ public class SplitFirstSamplesStore<S extends IsBlock, L extends IsBlock> implem
 		} catch (DataSourceException e) {
 			e.printStackTrace();
 			throw new StoreException(e);
-		}
+		}		
 		
-		
-		
-		return null;
+		return largeSplitter.getSignal();
 	}
 	
 	private Signal getIncreasedSignal(Signal signal) throws DataSourceException{
 //		Signal increased = new Signal(signal.height*2, signal.width*2);
-		WaveletData2D<Signal> increased = new ClearWaveletData2D(signal.height*2, signal.width*2);
-				
+		WaveletData2D<Signal> increased = getEmpty();
+		increased.getScaled().getScaled().setSignal(signal, 0, 0);
+		Signal sim = transformer.getInverseTransform2D(increased);
+		BufferedImageWrapper<BufferedImage> wr2 = new BufferedImageWrapper<BufferedImage>(new GrayscaleConverter(), sim);
+		BufferedImage im2 = wr2.getSource();
+		try {
+			ImageIO.write(im2, "png", new File("C:\\Users\\Vanchpuck\\Desktop\\fact.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
 		WaveletData2D<Signal> wData = transformer.getDirectTransform2D(signal);
 		
 		if(sampleCheck.pass(WaveletData2D.Segment.LH.getSignal(wData))){
@@ -130,10 +148,39 @@ public class SplitFirstSamplesStore<S extends IsBlock, L extends IsBlock> implem
 			increased.getWavelet().getWavelet().setSignal(s, 0, 0);
 		}
 		
-		return transformer.getInverseTransform2D(wData);
+		
+		
+		Signal s = transformer.getInverseTransform2D(increased);
+		
+		BufferedImageWrapper<BufferedImage> wr = new BufferedImageWrapper<BufferedImage>(new GrayscaleConverter(), s);
+		
+		BufferedImage im = wr.getSource();
+		
+		BufferedImageWrapper<BufferedImage> wr1 = new BufferedImageWrapper<BufferedImage>(new GrayscaleConverter(), signal);
+		
+		BufferedImage im1 = wr1.getSource();
+		
+		
+		
+		
+		try {
+			ImageIO.write(im1, "png", new File("C:\\Users\\Vanchpuck\\Desktop\\signal.png"));
+			ImageIO.write(im, "png", new File("C:\\Users\\Vanchpuck\\Desktop\\increased.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return s;
 		
 	}
 	
+	public WaveletData2D<Signal> getEmpty(){
+		int h = dataSource.getLargeBlock().getWidth();
+		Signal s = new Signal(new double[h*h], h, h);
+		
+		return transformer.getDirectTransform2D(s);
+	}
 	
 
 }

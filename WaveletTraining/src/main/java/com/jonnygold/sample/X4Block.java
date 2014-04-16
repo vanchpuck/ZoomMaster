@@ -2,8 +2,8 @@ package com.jonnygold.sample;
 
 public class X4Block implements IsBlock {
 
-	public static final int WIDTH = 4;
-	public static final int HEIGHT = 4;
+	public static final int WIDTH = 8;
+	public static final int HEIGHT = 8;
 	
 	private static X4Block instance;
 	

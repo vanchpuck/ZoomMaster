@@ -2,8 +2,8 @@ package com.jonnygold.sample;
 
 public class X8Block implements IsBlock {
 	
-	public static final int WIDTH = 8;
-	public static final int HEIGHT = 8;
+	public static final int WIDTH = 16;
+	public static final int HEIGHT = 16;
 	
 	private static X8Block instance;
 	

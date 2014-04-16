@@ -16,7 +16,7 @@ import java.util.List;
 
 import com.jonnygold.wavelet.Signal;
 
-class GrayscaleConverter implements BufferedImageWrapper.BufferedImageConverter{
+public class GrayscaleConverter implements BufferedImageWrapper.BufferedImageConverter{
 
 	
 	ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);

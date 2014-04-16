@@ -55,7 +55,7 @@ public class Main extends JFrame {
 		
 		ImagePanel imgPanel = new ImagePanel(new FlowLayout(FlowLayout.CENTER));
 		
-		Transformer t = new RateFilter(new WaveletTransformer(DB4Filter.getInstance(), SimpleTransform.getInstance()), 10) ;
+		Transformer t = new RateFilter(new WaveletTransformer(DB4Filter.getInstance(), SimpleTransform.getInstance()), 15) ;
 		WaveletData2D<Signal> w2d = t.getDirectTransform2D(wrapper.getSignals().get(0));
 		
 		wrapper.getSignals().set(0, w2d);
@@ -79,7 +79,9 @@ public class Main extends JFrame {
 				
 		samplesStore.connect();
 //		samplesStore.saveSamples(wrapper.getSignals().get(0));
-		samplesStore.getIncreased(wrapper.getSignals().get(0));
+		Signal res = samplesStore.getIncreased(wrapper.getSignals().get(0));
+		wrapper.getSignals().remove(0);
+		wrapper.getSignals().add(res);
 		samplesStore.disconnect();
 		
 		imgPanel.setImage(wrapper.getSource());

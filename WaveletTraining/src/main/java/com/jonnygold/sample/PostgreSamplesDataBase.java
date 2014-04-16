@@ -70,7 +70,7 @@ public abstract class PostgreSamplesDataBase<S extends IsBlock, L extends IsBloc
 		public void saveData(){
 			PreparedStatement st;
 			try {
-				st = connection.prepareStatement("select save_samples(?)");
+				st = connection.prepareStatement("select save_samples_x8(?)");
 				st.setArray(1, connection.createArrayOf("sample_type", samples));
 				st.executeQuery();
 				mark = 0;
@@ -151,16 +151,16 @@ public abstract class PostgreSamplesDataBase<S extends IsBlock, L extends IsBloc
 	public IsSamplesDataSource.Sample findSample(Signal signal, Segment segment) throws DataSourceException {
 		Object o = null;
 		String str = null;
-		Sample sample = new Sample(signal, new Signal(4, 4), segment);
+		Sample sample = new Sample(signal, new Signal(getSmallBlock().getHeight(), getSmallBlock().getHeight()), segment);
 		try {
 //			PreparedStatement st;
 			CallableStatement st;
 //			st = connection.prepareStatement("select get_increased(?)");
-			st = connection.prepareCall("{ ? = call get_increased( ? ) }");
+			st = connection.prepareCall("{ ? = call get_increased_x8( ? ) }");
 			st.registerOutParameter(1, Types.ARRAY);
 			st.setObject(2, sample, Types.OTHER);
 			st.execute();
-			Object s = st.getObject(1);
+			Jdbc4Array s = (Jdbc4Array)st.getObject(1);//array_test_type
 			
 			if(s != null){
 				String res = s.toString().substring(1, st.getObject(1).toString().length()-1);
