@@ -24,6 +24,7 @@ public class Signal {
     }
     
     public Signal(int h, int w){
+    	this.data = new double[h*w];
         this.height = h;
         this.width = w;
     }

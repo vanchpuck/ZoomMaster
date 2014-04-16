@@ -2,10 +2,11 @@ package com.jonnygold.sample;
 
 import com.jonnygold.wavelet.Signal;
 import com.jonnygold.wavelet.WaveletData2D;
+import com.jonnygold.wavelet.WaveletData2D.Segment;
 
 public interface IsSamplesDataSource<S extends IsBlock, L extends IsBlock> {
 
-	public static class Sample<S, L>{
+	public static class Sample{
 		
 		private final WaveletData2D.Segment segment;
 		private final Signal small;
@@ -32,7 +33,9 @@ public interface IsSamplesDataSource<S extends IsBlock, L extends IsBlock> {
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder()
-				.append("(1,\"{");
+				.append("(")
+				.append(getSegmentId(segment))
+				.append(",\"{");
 			for(double val : small.getData()){
 				builder.append(String.valueOf((int)val)).append(",");
 			}
@@ -47,18 +50,35 @@ public interface IsSamplesDataSource<S extends IsBlock, L extends IsBlock> {
 			return builder.toString();
 		}
 		
+		private int getSegmentId(WaveletData2D.Segment segment){
+			switch(segment){
+			case LL : 
+				return 1;
+			case LH : 
+				return 2;
+			case HL : 
+				return 3;
+			case HH : 
+				return 4;
+			default : 
+				throw new IllegalArgumentException("Неизвестный сегмент");
+			}
+		}
+		
 	}
 	
 	public void connect() throws DataSourceException;
 	
 	public void disconnect() throws DataSourceException;
 	
-	public void saveSample(Sample<S, L> sample) throws DataSourceException;
+	public void saveSample(Sample sample) throws DataSourceException;
 	
-	public Sample<S, L> findSample(S small) throws DataSourceException;
+	public Sample findSample(Signal sample, Segment segment) throws DataSourceException;
 	
 	public S getSmallBlock();
 	
 	public L getLargeBlock();
+	
+	public void flush();
 	
 }

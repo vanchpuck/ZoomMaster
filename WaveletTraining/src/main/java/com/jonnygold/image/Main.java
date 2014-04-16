@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URL;
+import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -39,30 +40,22 @@ public class Main extends JFrame {
 	
 	private static final String PASSWORD = "GoldenAxe";
 	
-	public Main() throws IOException, StoreException{
+	public Main() throws IOException, StoreException, SQLException{
 		super("Test");
 		setSize(new Dimension(400, 400));
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		URL url = this.getClass().getResource("/tenge.jpg");
+		URL url = this.getClass().getResource("/tenge_x40.jpg");
 		
 		File file = new File(URLDecoder.decode(url.getFile(), "UTF-8"));	
-		
-//		File f = new File("/home/izolotov/Downloads/Calendar/moravia.jpg");
-//		File f = new File("C:\\Users\\Vanchpuck\\Desktop\\lenin.jpg");
-		
-		
-		BufferedImage src = ImageIO.read(file);
 		
 		SignalWrapper<BufferedImage> wrapper = 
 				new BufferedImageWrapper<BufferedImage>(ImageIO.read(file), new GrayscaleConverter());
 		
-		BufferedImage img = wrapper.getSource();
-		
 		ImagePanel imgPanel = new ImagePanel(new FlowLayout(FlowLayout.CENTER));
 		
-		Transformer t = new WaveletTransformer(DB4Filter.getInstance(), SimpleTransform.getInstance());
+		Transformer t = new RateFilter(new WaveletTransformer(DB4Filter.getInstance(), SimpleTransform.getInstance()), 10) ;
 		WaveletData2D<Signal> w2d = t.getDirectTransform2D(wrapper.getSignals().get(0));
 		
 		wrapper.getSignals().set(0, w2d);
@@ -76,7 +69,7 @@ public class Main extends JFrame {
 		
 		
 		Transformer transformer = 
-				new RateFilter(new WaveletTransformer(HaarFilter.getInstance(), SimpleTransform.getInstance()), 5);
+				new RateFilter(new WaveletTransformer(HaarFilter.getInstance(), SimpleTransform.getInstance()), 30);
 		
 		IsSamplesDataSource<X4Block, X8Block> dataSource = 
 				new X4SamplesDataBase(URL, USER, PASSWORD);
@@ -85,14 +78,15 @@ public class Main extends JFrame {
 				new SplitFirstSamplesStore<X4Block, X8Block>(dataSource, transformer);
 				
 		samplesStore.connect();
-		samplesStore.saveSamples(wrapper.getSignals().get(0));
+//		samplesStore.saveSamples(wrapper.getSignals().get(0));
+		samplesStore.getIncreased(wrapper.getSignals().get(0));
 		samplesStore.disconnect();
 		
 		imgPanel.setImage(wrapper.getSource());
 		
 	}
 	
-	public static void main(String[] args) throws IOException, StoreException {
+	public static void main(String[] args) throws IOException, StoreException, SQLException {
 		
 		new Main();
 		
